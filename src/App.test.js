@@ -5,11 +5,13 @@ import App from './App';
 
 
 
-Enzyme.configure({ adapter: new EnzymeAdapter() })
+Enzyme.configure({ adapter: new EnzymeAdapter() });
 
 //The "setup()" is a Factory function to create a Shallow Wrapper component. Have parameter name props={} and state={} which is an object.
 const setup=(props={}, state=null)=>{
-  return shallow(<App {...props}/>)
+  const wrapper=shallow(<App {...props}/>);
+  if(state) wrapper.setState(state);// we we set state it will be applied to the wrapper component
+  return wrapper
 };
 //this function returns ShallowWrapper's element tag containing certain test Attribute
 const findByTestAttribute=(wrapper, testAttributeValue)=>{
@@ -50,5 +52,19 @@ test('counter starts at 0', ()=>{
 });
 
 test('clicking buttons increment counter display', ()=>{
+    const counter=7;
+    const wrapper=setup(null, {counter});// getting the shalow wrapped component with new state value
+    const button=wrapper.find("[data-test='increment-btn']");// finding the button to me tested
 
+    button.simulate('click');//simulate clicking on the button
+
+    wrapper.update();//force rerender the component so we can get the counter result after clicking
+
+    const counterState=wrapper.state('counter');//get the state "counter"
+    expect(counterState).toBe(counter+1);// checks its value
+
+    //button.simulate('click');
+    //wrapper.update();
+    const counterDisplay=wrapper.find("[data-test='counter-display']");
+    expect(counterDisplay.text()).toContain(counter+1); //To check the element for current state value
 });
