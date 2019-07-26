@@ -39,6 +39,12 @@ test('render increment button',()=>{
     expect(button.length).toBe(1)
 });
 
+test('render decrement button',()=>{
+    const wrapper =  setup();
+    const button=findByTestAttribute( wrapper,'decrement-btn');
+    expect(button.length).toBe(1)
+});
+
 test('render counter display', ()=>{
     const wrapper = shallow(<App />);
     const counterDisplay=wrapper.find("[data-test='counter-display']")
@@ -51,7 +57,7 @@ test('counter starts at 0', ()=>{
     expect(initialCounterState).toBe(0)
 });
 
-test('clicking buttons increment counter display', ()=>{
+test('clicking increment buttons increment counter display', ()=>{
     const counter=7;
     const wrapper=setup(null, {counter});// getting the shalow wrapped component with new state value
     const button=wrapper.find("[data-test='increment-btn']");// finding the button to me tested
@@ -67,4 +73,33 @@ test('clicking buttons increment counter display', ()=>{
     //wrapper.update();
     const counterDisplay=wrapper.find("[data-test='counter-display']");
     expect(counterDisplay.text()).toContain(counter+1); //To check the element for current state value
+});
+
+test('clicking decrement button decrement the counter display', ()=>{
+    const wrapper=shallow(<App/>);
+    wrapper.setState({counter:7});//set the current counter to 7
+
+    const decrementBtn=wrapper.find("[data-test='decrement-btn']");
+    decrementBtn.simulate('click');//click the button
+
+    wrapper.update();
+
+    const counterDisplay=wrapper.find("[data-test='counter-display']");
+    expect(counterDisplay.text()).toContain(6)
+});
+
+test('error message and decrement button disabled when counter below zero', ()=>{
+    const wrapper=shallow(<App/>);
+    wrapper.setState({disableBtn:true});//set the current counter to -1
+
+    //wrapper.update();
+    const decrementBtn=wrapper.find("[data-test='decrement-btn']");
+    expect(decrementBtn.props()["disabled"]).toBe(true); //Checking the property "disabled" is true or not
+
+    const errorMsg=wrapper.find("[data-test='error-msg']");
+    expect(errorMsg.text()).toContain('The counter cannot go below 0');
+});
+
+test('check the method onDecrement()', ()=>{
+
 });

@@ -1,4 +1,5 @@
 {
   "presets": ["@babel/env", "@babel/preset-react"],
-   "plugins": ["react-hot-loader/babel"]
+   "plugins": ["react-hot-loader/babel", "@babel/plugin-proposal-class-properties"]
 }
+//"@babel/plugin-proposal-class-properties" is needed so that we can set state outside of the constructor
