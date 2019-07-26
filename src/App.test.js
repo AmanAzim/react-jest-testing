@@ -104,7 +104,7 @@ test('check the method onDecrement()', ()=>{
     const wrapper=shallow(<App/>);
     wrapper.setState({counter:1});
 
-    wrapper.instance().onDecrement();// it will execute rthe method
+    wrapper.instance().onDecrement();// it will execute the "onDecrement()" method
 
     expect(wrapper.state('counter')).toBe(0)
 });
