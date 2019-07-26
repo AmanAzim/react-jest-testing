@@ -101,5 +101,10 @@ test('error message and decrement button disabled when counter below zero', ()=>
 });
 
 test('check the method onDecrement()', ()=>{
+    const wrapper=shallow(<App/>);
+    wrapper.setState({counter:1});
 
+    wrapper.instance().onDecrement();// it will execute rthe method
+
+    expect(wrapper.state('counter')).toBe(0)
 });
